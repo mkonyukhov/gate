@@ -9,9 +9,9 @@
         </encoder>
     </appender>
 
-    <root level="debug" additivity="false">
+    <root level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="Logger" level="info"/>
+    <logger name="com.mkonyukhov" level="debug"/>
 </configuration>

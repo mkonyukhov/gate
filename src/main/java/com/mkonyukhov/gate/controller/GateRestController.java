@@ -4,6 +4,7 @@ import com.mkonyukhov.gate.configuration.kafka.KafkaProperties;
 import com.mkonyukhov.gate.model.Message;
 import com.mkonyukhov.gate.service.SendingService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,13 @@ public class GateRestController {
     @PutMapping("/{id}")
     public ResponseEntity<String> putMessage(@PathVariable("id") String entityId, @RequestBody Message payload) {
         if (validator.isUuid(entityId)) {
-            sendingService.send(entityId, payload, kafkaProperties.getOutTopicName());
-            return ResponseEntity.ok(entityId);
+            if (sendingService.send(entityId, payload, kafkaProperties.getOutTopicName())) {
+                return ResponseEntity.ok(entityId);
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.SERVICE_UNAVAILABLE)
+                        .build();
+            }
         }
 
         return ResponseEntity
