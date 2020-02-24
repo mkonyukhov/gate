@@ -1,0 +1,7 @@
+server:
+  port: ${GATE_SERVER_PORT:8082}
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+    out-topic-name: ${OUT_TOPIC_NAME:TEST.TOPIC}
